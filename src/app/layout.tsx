@@ -1,6 +1,6 @@
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
 import '@mantine/core/styles.css';
-import './globals.css';
+import './globals.scss';
 
 export default function RootLayout({
   children,
