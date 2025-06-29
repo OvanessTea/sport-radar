@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import '@mantine/core/styles.css';
 
 :root {
   --foreground-rgb: 0, 0, 0;
