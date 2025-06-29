@@ -1,13 +1,20 @@
-import "./globals.css";
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
+import '@mantine/core/styles.css';
+import './globals.css';
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" {...mantineHtmlProps}>
+      <head>
+        <ColorSchemeScript />
+      </head>
+      <body>
+        <MantineProvider>{children}</MantineProvider>
+      </body>
     </html>
   );
 }
