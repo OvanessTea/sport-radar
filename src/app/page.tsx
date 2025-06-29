@@ -109,9 +109,7 @@ export default function HomePage() {
 						setSelectedTournament={setSelectedTournament}
 						availableTournaments={availableTournaments}
 					/>
-					{filteredMatches.length > 0 && (
-						<Matches matches={filteredMatches} />
-					)}
+					<Matches matches={filteredMatches} />
 				</Container>
 			</AppShell.Main>
 		</AppShell>
