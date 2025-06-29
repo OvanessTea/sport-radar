@@ -1,48 +1,49 @@
 'use client';
-import { TournamentType } from '@/types/tournament.type';
-import { MatchType } from '@/types/match.type';
-import { SportType } from '@/types/sport.type';
-import { useEffect, useState } from 'react';
-import { fetchMatches, fetchSports, fetchTournaments } from '@/services/api';
+import { useData } from '@/hooks/useData';
 
 export default function HomePage() {
+    // const [filteredMatches, setFilteredMatches] = useState<MatchType[]>([]);
+    // const [selectedSport, setSelectedSport] = useState<SportType | null>(null);
+    // const [selectedTournament, setSelectedTournament] = useState<TournamentType | null>(null);
+    // const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
+    
+    const {matches, tournaments, sports, isLoading, error} = useData(); 
 
-    const [tournaments, setTournaments] = useState<TournamentType[]>([]);
-    const [matches, setMatches] = useState<MatchType[]>([]);
-    const [sports, setSports] = useState<SportType[]>([]);
-
-    const handleFetchTournaments = () => {
-      fetchTournaments().then((data: TournamentType[]) => setTournaments(data));
+    // Show loading state
+    if (isLoading) {
+        return <div>Loading...</div>;
     }
 
-    const handleFetchSports = () => {
-        fetchSports().then((data: SportType[]) => setSports(data));
+    // Show error state
+    if (error) {
+        return <div>Error: {error}</div>;
     }
-
-    const handleFetchMatches = () => {
-        fetchMatches().then((data: MatchType[]) => setMatches(data));
-    }
-
-    useEffect(() => {
-        handleFetchTournaments();
-        handleFetchSports();
-        handleFetchMatches();
-    }, []);
 
   return (
     <div>
-      <button onClick={() => {
-        handleFetchTournaments();
-      }}>Tournaments</button>
-      <button onClick={() => {
-        handleFetchSports();
-      }}>Sports</button>
-      <button onClick={() => {
-        handleFetchMatches();
-      }}>Matches</button>
-      <h1>{tournaments.map(tournament => tournament.name).join(', ')}</h1>
-      <h1>{sports.map(sport => sport.name).join(', ')}</h1>
-      <h1>{matches.map(match => match.home_team).join(', ')}</h1>
+      {/* <select onChange={(e) => {
+        setSelectedSport(sports.find(sport => sport.name === e.target.value) || null);
+      }}>
+        {sports.map(sport => <option key={sport.id} value={sport.name}>{sport.name}</option>)}
+      </select>
+      <select onChange={(e) => {
+        setSelectedTournament(tournaments.find(tournament => tournament.name === e.target.value) || null);
+      }}>
+        {tournaments.map(tournament => <option key={tournament.id} value={tournament.name}>{tournament.name}</option>)}
+      </select>
+      <input type="text" onChange={(e) => {
+        setSelectedTeam(e.target.value);
+      }} /> */}
+      <div>
+        {matches.map(match => (
+          <div key={match.id}>
+            <h1>{match.home_team} - {match.away_team}</h1>
+            <h1>{match.home_score} - {match.away_score}</h1>
+            <h1>{match.start_time}</h1>
+            <h1>{match.status}</h1>
+          </div>
+        ))}
+      </div>
     </div>
   );
 } 
