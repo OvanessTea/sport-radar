@@ -8,11 +8,14 @@ import { MatchType } from '@/types/match.type';
 import { TournamentType } from '@/types/tournament.type';
 import { useEffect, useState } from 'react';
 import styles from "./main.module.scss";
+import { Alert, AppShell, Container, Loader } from '@mantine/core';
+import { IconAlertCircle } from '@tabler/icons-react';
+import { Matches } from '@/components/matches/Matches';
 
 export default function HomePage() {
 	const [filteredMatches, setFilteredMatches] = useState<MatchType[]>([]);
 	const [selectedSport, setSelectedSport] = useState<string>('all');
-	const [selectedTournament, setSelectedTournament] = useState<TournamentType>({id: 99, name: 'all', sportId: 99});
+	const [selectedTournament, setSelectedTournament] = useState<TournamentType>({ id: 99, name: 'all', sportId: 99 });
 	const [availableTournaments, setAvailableTournaments] = useState<TournamentType[]>([]);
 
 	const { matches, tournaments, sports, isLoading, error } = useData();
@@ -22,7 +25,7 @@ export default function HomePage() {
 	}, [selectedSport, selectedTournament]);
 
 	useEffect(() => {
-		setSelectedTournament({id: 99, name: 'all', sportId: 99});
+		setSelectedTournament({ id: 99, name: 'all', sportId: 99 });
 		console.log(selectedSport, tournaments, sports);
 		if (selectedSport === 'all') {
 			setAvailableTournaments(tournaments);
@@ -71,38 +74,47 @@ export default function HomePage() {
 		setFilteredMatches(result);
 	}
 
-	// Show loading state
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return (
+			<div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
+				<Loader color="blue" size="lg" />
+			</div>
+		);
 	}
 
-	// Show error state
 	if (error) {
-		return <div>Error: {error}</div>;
+		return (
+			<Alert icon={<IconAlertCircle size={16} />} title="Error" color="red">
+				{error}
+			</Alert>
+		);
 	}
 
 	return (
-		<div className={styles.container}>
-			{sports.length > 0 && (
+		<AppShell
+			navbar={{ width: 285, breakpoint: 'sm' }}
+			withBorder={false}
+			padding="md"
+			className={styles.wrapper}
+		>
+			<AppShell.Navbar p="md">
 				<Sidebar setSelectedTab={setSelectedSport} selectedTab={selectedSport || 'all'} />
-			)}
+			</AppShell.Navbar>
 
-			<div className={styles.content}>
-				<Search onSubmit={handleMatches} />
-				<Tournaments
-					selectedTournament={selectedTournament}
-					setSelectedTournament={setSelectedTournament}
-					availableTournaments={availableTournaments}
-				/>
-				{filteredMatches.length > 0 && (
-					<div>
-						{filteredMatches.map(match => (
-							<div key={match.id}>{match.home_team} - {match.away_team}</div>
-						))}
-					</div>
-				)}
-			</div>
-		</div>
+			<AppShell.Main>
+				<Container size="lg" className={styles.container}>
+					<Search onSubmit={handleMatches} />
+					<Tournaments
+						selectedTournament={selectedTournament}
+						setSelectedTournament={setSelectedTournament}
+						availableTournaments={availableTournaments}
+					/>
+					{filteredMatches.length > 0 && (
+						<Matches matches={filteredMatches} />
+					)}
+				</Container>
+			</AppShell.Main>
+		</AppShell>
 
 	);
-} 
+} 	
