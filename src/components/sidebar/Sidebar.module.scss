@@ -1,0 +1,16 @@
+@use '@/styles/shared.scss' as shared;
+
+.sidebar {
+    width: 285px;
+    
+    .tabsList {
+        @extend %tabsList;
+        flex-direction: column;
+        
+        .tab {
+            @extend %tab;
+            padding: 8px 10px;
+            background: transparent;
+        }
+    }
+}
