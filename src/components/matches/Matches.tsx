@@ -2,6 +2,7 @@ import { MatchType } from "@/types/match.type";
 import { Paper, Table } from "@mantine/core";
 import styles from "./Matches.module.scss";
 import { NotFound } from "../not-found/NotFound";
+import { dateTransform } from "@/helpers/transform/date.transform";
 
 interface MatchesProps {
     matches: MatchType[];
@@ -23,15 +24,7 @@ export const Matches = ({ matches }: MatchesProps) => {
             <Table.Tbody>
                 {matches.map(match => (
                     <Table.Tr key={match.id}>
-                        <Table.Td p="sm">{new Date(match.start_time).toLocaleString('en-US', {
-                            year: 'numeric',
-                            month: '2-digit', 
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit',
-                            hour12: false
-                        }).replace(/(\d+)\/(\d+)\/(\d+),\s(\d+):(\d+):(\d+)/, '$3-$1-$2 $4:$5:$6')}</Table.Td>
+                        <Table.Td p="sm">{dateTransform(match.start_time)}</Table.Td>
                         <Table.Td>{match.status.charAt(0).toUpperCase() + match.status.slice(1).toLowerCase()}</Table.Td>
                         <Table.Td p="sm">{match.home_team}</Table.Td>
                         <Table.Td p="sm">{match.away_team}</Table.Td>
