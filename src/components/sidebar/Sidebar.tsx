@@ -19,7 +19,7 @@ const sportIcons: Record<string, React.ComponentType<{ size?: number; color?: st
   "American Football": IconBallAmericanFootball,
 };
 
-export const Sidebar = ({ setSelectedTab, selectedTab }: { setSelectedTab: (tab: string) => void, selectedTab: string }) => {
+export const Sidebar = ({ setSelectedTab, selectedTab, onTabChange }: { setSelectedTab: (tab: string) => void, selectedTab: string, onTabChange?: () => void }) => {
   const { sports } = useData();
 
   if (sports.length === 0) {
@@ -28,6 +28,7 @@ export const Sidebar = ({ setSelectedTab, selectedTab }: { setSelectedTab: (tab:
 
   const handleTabChange = (value: string | null) => {
     setSelectedTab(value || 'all');
+    onTabChange?.();
   };
 
   const renderIcon = (name: string, isSelected: boolean) => {

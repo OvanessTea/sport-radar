@@ -15,4 +15,24 @@
             margin-inline: 0;
         }
     }
+
+    @media (max-width: 768px) {
+        main {
+            padding-top: 60px;
+        }
+    }
+}
+
+.menuButton {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background: white;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+        background: #f8f9fa;
+    }
 }

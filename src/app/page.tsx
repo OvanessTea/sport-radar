@@ -8,8 +8,9 @@ import { MatchType } from '@/types/match.type';
 import { TournamentType } from '@/types/tournament.type';
 import { useEffect, useState } from 'react';
 import styles from "./main.module.scss";
-import { Alert, AppShell, Container, Loader } from '@mantine/core';
-import { IconAlertCircle } from '@tabler/icons-react';
+import { Alert, AppShell, Container, Loader, Drawer, ActionIcon } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import { IconAlertCircle, IconMenu2 } from '@tabler/icons-react';
 import { Matches } from '@/components/matches/Matches';
 
 export default function HomePage() {
@@ -17,6 +18,9 @@ export default function HomePage() {
 	const [selectedSport, setSelectedSport] = useState<string>('all');
 	const [selectedTournament, setSelectedTournament] = useState<TournamentType>({ id: 99, name: 'all', sportId: 99 });
 	const [availableTournaments, setAvailableTournaments] = useState<TournamentType[]>([]);
+	const [drawerOpened, setDrawerOpened] = useState(false);
+	
+	const isMobile = useMediaQuery('(max-width: 768px)', false) ?? false;
 
 	const { matches, tournaments, sports, isLoading, error } = useData();
 
@@ -97,12 +101,25 @@ export default function HomePage() {
 			padding="md"
 			className={styles.wrapper}
 		>
-			<AppShell.Navbar p="md">
-				<Sidebar setSelectedTab={setSelectedSport} selectedTab={selectedSport || 'all'} />
-			</AppShell.Navbar>
+			{!isMobile && (
+				<AppShell.Navbar p="md">
+					<Sidebar setSelectedTab={setSelectedSport} selectedTab={selectedSport || 'all'} />
+				</AppShell.Navbar>
+			)}
 
 			<AppShell.Main>
 				<Container size="lg" className={styles.container}>
+					{isMobile && !drawerOpened && (
+						<ActionIcon
+							variant="subtle"
+							size="lg"
+							color="dark.5"
+							onClick={() => setDrawerOpened(true)}
+							className={styles.menuButton}
+						>
+							<IconMenu2 size={24} />
+						</ActionIcon>
+					)}
 					<Search onSubmit={handleMatches} />
 					<Tournaments
 						selectedTournament={selectedTournament}
@@ -112,6 +129,21 @@ export default function HomePage() {
 					<Matches matches={filteredMatches} />
 				</Container>
 			</AppShell.Main>
+
+			<Drawer
+				opened={drawerOpened && isMobile}
+				onClose={() => setDrawerOpened(false)}
+				size="285px"
+				title="Sports"
+				hiddenFrom="sm"
+				zIndex={2000}
+			>
+				<Sidebar 
+					setSelectedTab={setSelectedSport} 
+					selectedTab={selectedSport || 'all'} 
+					onTabChange={() => setDrawerOpened(false)}
+				/>
+			</Drawer>
 		</AppShell>
 
 	);

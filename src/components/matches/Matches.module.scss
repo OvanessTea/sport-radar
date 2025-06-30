@@ -1,5 +1,11 @@
 .paper {
     border-radius: 8px;
+    overflow-x: auto;
+    
+    .table {
+        min-width: 600px;
+    }
+    
     td {
         color: #666699;
         font-weight: 500;
