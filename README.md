@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sport Radar - Test Task
 
-## Getting Started
+A web application for displaying sports matches, tournaments, and sports types with filtering capabilities.
 
-First, run the development server:
+## Features
 
+- **Data Display**: List of sports, tournaments, and matches
+- **Filtering**: Search by team name, filter by sport and tournament
+- **Caching**: Local data storage for better performance
+
+## Technologies
+
+- **Next.js 15** with TypeScript
+- **Mantine UI** for interface components
+- **Jest** for testing
+- **SCSS** for styling
+
+## Installation & Start
+
+1. **Clone the repository**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd sport-radar
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install dependencies**
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Start in development mode**
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Open in browser**
+```
+http://localhost:3000
+```
 
-## Learn More
+## Testing
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Run all tests
+npm test
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Watch mode
+npm run test:watch
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Coverage
+npm run test:coverage
+```
 
-## Deploy on Vercel
+## Production build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build
+npm start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## API
+
+The app uses the following endpoints:
+- `GET /sport/all` - List of sports
+- `GET /tournament/all` - List of tournaments
+- `GET /match/all` - List of matches
