@@ -8,5 +8,9 @@ export const mockSports: SportType[] = [
     {
         "id": 2,
         "name": "Basketball"
-    }
+    },
+    {
+		"id": 4,
+		"name": "Baseball"
+	},
 ]

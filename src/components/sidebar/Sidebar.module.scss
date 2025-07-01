@@ -11,6 +11,17 @@
             @extend %tab;
             padding: 8px 10px;
             background: transparent;
+
+            * {
+                background-color: transparent;
+                padding: 0;
+            }
+            :global(.mantine-Chip-label) {
+                width: 100%;
+            }
+            :global(.mantine-Chip-iconWrapper) {
+                display: none;
+            }
         }
     }
 }

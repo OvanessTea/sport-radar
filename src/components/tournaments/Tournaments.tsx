@@ -1,47 +1,48 @@
 import styles from "./Tournaments.module.scss";
 import { TournamentType } from "@/types/tournament.type";
-import { Tabs } from "@mantine/core";
+import { Chip, ChipGroup } from "@mantine/core";
 
 interface TournamentProps {
-    selectedTournament: TournamentType;
-    setSelectedTournament: (tournament: TournamentType) => void;
+    selectedTournaments: number[];
+    setSelectedTournaments: (tournamentIds: number[]) => void;
     availableTournaments: TournamentType[];
 }
 
-export const Tournaments = ({ selectedTournament, setSelectedTournament, availableTournaments }: TournamentProps) => {
+export const Tournaments = ({ selectedTournaments, setSelectedTournaments, availableTournaments }: TournamentProps) => {
 
-    const handleTabChange = (value: string | null) => {
-        setSelectedTournament(
-            availableTournaments.find(tournament => tournament.name === value) || 
-            {id: 99, name: 'all', sportId: 99}
-        );
+    const handleTournamentChange = (value: string | string[]) => {
+        const selectedValue = Array.isArray(value) ? value : [value];
+
+        const tournamentIds = selectedValue.map(name => {
+            if (name === 'all') return 0;
+            const tournament = availableTournaments.find(t => t.name === name);
+            return tournament?.id || 0;
+        }).filter(id => id !== 0);
+
+        setSelectedTournaments(tournamentIds);
     }
 
     return (
-        <Tabs 
-            className={styles.tournaments} 
-            value={selectedTournament?.name} 
-            onChange={handleTabChange}
-            variant="pills"
-        >
-            <Tabs.List className={styles.tabsList}>
-                <Tabs.Tab 
-                    className={`${styles.tab} ${selectedTournament?.name === 'all' ? styles.selected : ''}`} 
-                    value="all"
-                    onClick={() => setSelectedTournament({id: 99, name: 'all', sportId: 99})}
+        <div className={styles.tournaments}>
+            <div className={styles.tabsList}>
+                <ChipGroup
+                    value={selectedTournaments.length === 0 ? ['all'] : availableTournaments
+                        .filter(t => selectedTournaments.includes(t.id))
+                        .map(t => t.name)}
+                    onChange={handleTournamentChange}
+                    multiple={true}
                 >
-                    <p className={styles.tournament__name}>All</p>
-                </Tabs.Tab>
-            {availableTournaments.map((tournament) => (
-                <Tabs.Tab 
-                key={tournament.id} 
-                className={`${styles.tab} ${selectedTournament?.id === tournament.id ? styles.selected : ''}`} 
-                value={tournament.name}
-                >
-                    <p className={styles.tournament__name}>{tournament.name}</p>
-                    </Tabs.Tab>
-                ))}
-            </Tabs.List>
-        </Tabs>
+                    {availableTournaments.map((tournament) => (
+                        <Chip
+                            key={tournament.id}
+                            value={tournament.name}
+                            className={`${styles.tab} ${selectedTournaments.includes(tournament.id) ? styles.selected : ''}`}
+                        >
+                            <p className={styles.tournament__name}>{tournament.name}</p>
+                        </Chip>
+                    ))}
+                </ChipGroup>
+            </div>
+        </div>
     )
 }

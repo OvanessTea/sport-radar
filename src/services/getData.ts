@@ -13,18 +13,18 @@ export const getData = async () => {
     } catch {
         // Continue if parse fails
     }
-    const matches = await fetchMatches();   
+    const matches = await fetchMatches();
     const tournaments = await fetchTournaments();
     const sportsData = await fetchSports();
     const sports = sportsData ? sportsData.map((sport: SportType) => ({
-      ...sport,
-      name: transformSportName(sport.name)
+        ...sport,
+        name: transformSportName(sport.name)
     })) : [];
-    const data = {matches, tournaments, sports};
+    const data = { matches, tournaments, sports };
     cacheData(data);
     return data;
 }
 
-const cacheData = (data: {matches: MatchType[], tournaments: TournamentType[], sports: SportType[]}) => {
+const cacheData = (data: { matches: MatchType[], tournaments: TournamentType[], sports: SportType[] }) => {
     localStorage.setItem('data', JSON.stringify(data));
 }
