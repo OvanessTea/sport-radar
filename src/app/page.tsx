@@ -30,7 +30,6 @@ export default function HomePage() {
 
 	useEffect(() => {
 		setSelectedTournament({ id: 99, name: 'all', sportId: 99 });
-		console.log(selectedSport, tournaments, sports);
 		if (selectedSport === 'all') {
 			setAvailableTournaments(tournaments);
 		} else {
