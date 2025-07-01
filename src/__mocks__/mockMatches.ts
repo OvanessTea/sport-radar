@@ -21,4 +21,14 @@ export const mockMatches: MatchType[] = [
         "home_score": "3",
         "away_score": "5"
     },
+    {
+        "id": 6,
+        "tournamentId": 6,
+        "start_time": "2022-02-08T20:42:13Z",
+        "status": "COMPLETED",
+        "home_team": "Los Angeles Kings",
+        "away_team": "Chicago Blackhawks",
+        "home_score": "2",
+        "away_score": "3"
+    }
 ];
