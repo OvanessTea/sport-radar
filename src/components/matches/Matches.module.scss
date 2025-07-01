@@ -1,13 +1,46 @@
 .paper {
     border-radius: 8px;
     overflow-x: auto;
+    animation: fadeIn 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
     
-    .table {
-        min-width: 600px;
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     
-    td {
-        color: #666699;
-        font-weight: 500;
+    .table {
+        width: 100%;
+        
+        th {
+            font-weight: 600;
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        td {
+            color: #666699;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+        
+        tr:hover td {
+            background-color: #f8f9fa;
+        }
+    }
+}
+
+.loadingContainer {
+    padding: 2rem;
+    flex-direction: column;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

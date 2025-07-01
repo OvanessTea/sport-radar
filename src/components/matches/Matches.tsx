@@ -9,8 +9,13 @@ interface MatchesProps {
 }
 
 export const Matches = ({ matches }: MatchesProps) => {
+
+    if (matches.length === 0) {
+        return <NotFound />;
+    }
+
     return (
-        matches.length > 0 ? (<Paper withBorder className={styles.paper}>
+        <Paper withBorder className={styles.paper}>
             <Table highlightOnHover className={styles.table}>
                 <Table.Thead>
                     <Table.Tr>
@@ -35,6 +40,6 @@ export const Matches = ({ matches }: MatchesProps) => {
                     ))}
                 </Table.Tbody>
             </Table>
-        </Paper>) : <NotFound />
-    )
-}
+        </Paper>
+    );
+};
