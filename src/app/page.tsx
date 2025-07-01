@@ -8,10 +8,11 @@ import { MatchType } from '@/types/match.type';
 import { TournamentType } from '@/types/tournament.type';
 import { useEffect, useState } from 'react';
 import styles from "./main.module.scss";
-import { Alert, AppShell, Container, Loader, Drawer, ActionIcon } from '@mantine/core';
+import { Alert, AppShell, Container, Loader, Drawer, ActionIcon, Group } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconAlertCircle, IconMenu2 } from '@tabler/icons-react';
 import { Matches } from '@/components/matches/Matches';
+import { ClearFilters } from '@/components/filters/ClearFilters';
 
 export default function HomePage() {
 	const [filteredMatches, setFilteredMatches] = useState<MatchType[]>([]);
@@ -19,7 +20,7 @@ export default function HomePage() {
 	const [selectedTournament, setSelectedTournament] = useState<TournamentType>({ id: 99, name: 'all', sportId: 99 });
 	const [availableTournaments, setAvailableTournaments] = useState<TournamentType[]>([]);
 	const [drawerOpened, setDrawerOpened] = useState(false);
-	
+	const [searchQuery, setSearchQuery] = useState<string>('');
 	const isMobile = useMediaQuery('(max-width: 768px)', false) ?? false;
 
 	const { matches, tournaments, sports, isLoading, error } = useData();
@@ -77,6 +78,21 @@ export default function HomePage() {
 		setFilteredMatches(result);
 	}
 
+	const clearFilters = () => {
+		setSelectedSport('all');
+		setSelectedTournament({ id: 99, name: 'all', sportId: 99 });
+		setSearchQuery('');
+		handleMatches();
+	}
+
+	const hasActiveFilters = () => {
+		return (
+			selectedSport !== 'all' ||
+			selectedTournament.name !== 'all' ||
+			searchQuery !== ''
+		);
+	}
+
 	if (isLoading) {
 		return (
 			<div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
@@ -119,12 +135,21 @@ export default function HomePage() {
 							<IconMenu2 size={24} />
 						</ActionIcon>
 					)}
-					<Search onSubmit={handleMatches} />
-					<Tournaments
-						selectedTournament={selectedTournament}
-						setSelectedTournament={setSelectedTournament}
-						availableTournaments={availableTournaments}
-					/>
+					<Search onSubmit={handleMatches} setSearchQuery={setSearchQuery} searchQuery={searchQuery} />
+					<Group 
+						justify="space-between" 
+						align="flex-start" 
+					>
+						<Tournaments
+							selectedTournament={selectedTournament}
+							setSelectedTournament={setSelectedTournament}
+							availableTournaments={availableTournaments}
+						/>
+						<ClearFilters
+							onClear={clearFilters}
+							hasActiveFilters={hasActiveFilters()}
+						/>
+					</Group>
 					<Matches matches={filteredMatches} />
 				</Container>
 			</AppShell.Main>
@@ -137,9 +162,9 @@ export default function HomePage() {
 				hiddenFrom="sm"
 				zIndex={2000}
 			>
-				<Sidebar 
-					setSelectedTab={setSelectedSport} 
-					selectedTab={selectedSport || 'all'} 
+				<Sidebar
+					setSelectedTab={setSelectedSport}
+					selectedTab={selectedSport || 'all'}
 					onTabChange={() => setDrawerOpened(false)}
 				/>
 			</Drawer>

@@ -3,14 +3,14 @@
 import { IconSearch, IconX } from "@tabler/icons-react";
 import { TextInput } from "@mantine/core";
 import styles from "./Search.module.scss";
-import { useState } from "react";
 
 interface SearchProps {
+    searchQuery: string;
+    setSearchQuery: (search: string) => void;
     onSubmit: (search?: string) => void;
 }
 
-export const Search = ({ onSubmit }: SearchProps) => {
-    const [search, setSearch] = useState("");
+export const Search = ({ onSubmit, setSearchQuery, searchQuery }: SearchProps) => {
 
     const handleSearch = (search?: string) => {
         onSubmit(search);
@@ -21,18 +21,20 @@ export const Search = ({ onSubmit }: SearchProps) => {
             <TextInput
                 className={styles.input}
                 placeholder="Search for matches"
-                leftSection={<IconSearch cursor="pointer" size={16} onClick={() => handleSearch(search)} />}
-                rightSection={search.length > 0 && (
+                leftSection={<IconSearch cursor="pointer" size={16} onClick={() => handleSearch(searchQuery)} />}
+                rightSection={searchQuery.length > 0 && (
                     <IconX cursor="pointer" size={16} onClick={() => {
-                        setSearch('');
+                        setSearchQuery('');
                         handleSearch();
                     }} />
                 )}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={searchQuery}
+                onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                }}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                        handleSearch(search);
+                        handleSearch(searchQuery);
                     }
                 }}
             />

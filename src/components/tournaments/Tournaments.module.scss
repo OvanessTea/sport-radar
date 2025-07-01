@@ -1,6 +1,7 @@
 @use '@/styles/shared.scss' as shared;
 
 .tournaments {
+    padding: 3px 0;
     .tabsList {
         @extend %tabsList;
         
