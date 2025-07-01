@@ -1,4 +1,3 @@
-import { useData } from "@/hooks/useData";
 import { Tabs } from "@mantine/core";
 import {
   IconBallFootball,
@@ -9,6 +8,14 @@ import {
   IconSoccerField
 } from "@tabler/icons-react";
 import styles from "./Sidebar.module.scss";
+import { SportType } from "@/types/sport.type";
+
+interface SidebarProps {
+  availableSports: SportType[];
+  setSelectedTab: (tab: string) => void;
+  selectedTab: string;
+  onTabChange?: () => void;
+}
 
 const sportIcons: Record<string, React.ComponentType<{ size?: number; color?: string; stroke?: number }>> = {
   All: IconSoccerField,
@@ -19,10 +26,9 @@ const sportIcons: Record<string, React.ComponentType<{ size?: number; color?: st
   "American Football": IconBallAmericanFootball,
 };
 
-export const Sidebar = ({ setSelectedTab, selectedTab, onTabChange }: { setSelectedTab: (tab: string) => void, selectedTab: string, onTabChange?: () => void }) => {
-  const { sports } = useData();
+export const Sidebar = ({ availableSports, setSelectedTab, selectedTab, onTabChange }: SidebarProps) => {
 
-  if (sports.length === 0) {
+  if (availableSports.length === 0) {
     return null;
   }
 
@@ -60,7 +66,7 @@ export const Sidebar = ({ setSelectedTab, selectedTab, onTabChange }: { setSelec
           {renderIcon('All', selectedTab === 'all')}
           All
         </Tabs.Tab>
-        {sports.map((sport) => (
+        {availableSports.map((sport) => (
           <Tabs.Tab 
             key={sport.id} 
             value={sport.name} 

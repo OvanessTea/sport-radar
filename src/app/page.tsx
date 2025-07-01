@@ -118,7 +118,7 @@ export default function HomePage() {
 		>
 			{!isMobile && (
 				<AppShell.Navbar p="md">
-					<Sidebar setSelectedTab={setSelectedSport} selectedTab={selectedSport || 'all'} />
+					<Sidebar availableSports={sports} setSelectedTab={setSelectedSport} selectedTab={selectedSport || 'all'} />
 				</AppShell.Navbar>
 			)}
 
@@ -163,6 +163,7 @@ export default function HomePage() {
 				zIndex={2000}
 			>
 				<Sidebar
+					availableSports={sports}
 					setSelectedTab={setSelectedSport}
 					selectedTab={selectedSport || 'all'}
 					onTabChange={() => setDrawerOpened(false)}
