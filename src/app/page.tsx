@@ -42,7 +42,14 @@ export default function HomePage() {
 	}, [selectedSports, tournaments, sports]);
 
 	const handleMatches = async (search?: string) => {
-		const result = await refreshData(matches, selectedSports, selectedTournaments, search);
+		const result = await refreshData(
+			matches, 
+			selectedSports, 
+			selectedTournaments, 
+			search, 
+			sports, 
+			tournaments
+		);
 		setFilteredMatches(result);
 	}
 

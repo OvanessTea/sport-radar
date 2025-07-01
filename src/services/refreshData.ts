@@ -1,16 +1,17 @@
 import { MatchType } from "@/types/match.type";
+import { SportType } from "@/types/sport.type";
+import { TournamentType } from "@/types/tournament.type";
 import { bySportFilter } from "@/helpers/filters/by_sport.filter";
 import { byTournamentFilter } from "@/helpers/filters/by_tournament.filter";
-import { getData } from "./getData";
 
 export const refreshData = async (
     matches: MatchType[], 
     selectedSports: string[], 
     selectedTournaments: number[], 
-    search?: string
+    search?: string,
+    sports?: SportType[],
+    tournaments?: TournamentType[]
 ) => {
-    const { sports, tournaments } = await getData();
-    
     const filters = {
         sport: selectedSports,
         tournament: selectedTournaments,
@@ -22,7 +23,7 @@ export const refreshData = async (
         return matches;
     }
 
-    if (filters.sport.length > 0) {
+    if (filters.sport.length > 0 && sports && tournaments) {
         result = bySportFilter(result, filters.sport, sports, tournaments);
     }
 
