@@ -8,14 +8,14 @@ import { TournamentType } from '@/types/tournament.type';
 describe('Tournaments', () => {
 
     const TestComponent = ({ availableTournaments }: { availableTournaments: TournamentType[] }) => {
-        const [selectedTournament, setSelectedTournament] = useState(
-            availableTournaments.length > 0 ? availableTournaments[0] : {id: 99, name: 'all', sportId: 99}
+        const [selectedTournaments, setSelectedTournaments] = useState(
+            availableTournaments.length > 0 ? [availableTournaments[0].id] : []
         );
         
         return (
             <Tournaments 
-                selectedTournament={selectedTournament} 
-                setSelectedTournament={setSelectedTournament} 
+                selectedTournaments={selectedTournaments} 
+                setSelectedTournaments={setSelectedTournaments} 
                 availableTournaments={availableTournaments} 
             />
         );
@@ -33,18 +33,18 @@ describe('Tournaments', () => {
         expect(screen.getByText('NHL')).toBeInTheDocument()
     });
 
-    it('should handle selected tournament', () => {
+    it('should handle selected tournaments', () => {
         renderWithProviders(<TestComponent availableTournaments={mockTournaments} />)
 
-        expect(screen.getByText('UEFA Champions league').closest('button')).toHaveClass('selected', { exact: false });
-        expect(screen.getByText('NBA').closest('button')).not.toHaveClass('selected', { exact: false });
-        expect(screen.getByText('NHL').closest('button')).not.toHaveClass('selected', { exact: false });
+        expect(screen.getByText('UEFA Champions league').closest('.tab')).toHaveClass('selected');
+        expect(screen.getByText('NBA').closest('.tab')).not.toHaveClass('selected');
+        expect(screen.getByText('NHL').closest('.tab')).not.toHaveClass('selected');
 
         fireEvent.click(screen.getByText('NBA'))
 
-        expect(screen.getByText('UEFA Champions league').closest('button')).not.toHaveClass('selected', { exact: false });
-        expect(screen.getByText('NBA').closest('button')).toHaveClass('selected', { exact: false });
-        expect(screen.getByText('NHL').closest('button')).not.toHaveClass('selected', { exact: false });
+        expect(screen.getByText('UEFA Champions league').closest('.tab')).toHaveClass('selected');
+        expect(screen.getByText('NBA').closest('.tab')).toHaveClass('selected');
+        expect(screen.getByText('NHL').closest('.tab')).not.toHaveClass('selected');
     });
 
     it('should handle available tournaments', () => {
@@ -59,19 +59,14 @@ describe('Tournaments', () => {
         expect(screen.getByText('UEFA Champions league')).toBeInTheDocument();
         expect(screen.getByText('NBA')).toBeInTheDocument();
         expect(screen.queryByText('NHL')).not.toBeInTheDocument();
-
-        expect(screen.getByText('UEFA Champions league').closest('button')).toHaveClass('selected', { exact: false });
-        expect(screen.getByText('NBA').closest('button')).not.toHaveClass('selected', { exact: false });
     });
 
     it('should handle empty available tournaments', () => {
         renderWithProviders(<TestComponent availableTournaments={[]} />)
 
-        expect(screen.getByText('All')).toBeInTheDocument();
         expect(screen.queryByText('UEFA Champions league')).not.toBeInTheDocument();
         expect(screen.queryByText('NBA')).not.toBeInTheDocument();
         expect(screen.queryByText('NHL')).not.toBeInTheDocument();
-
-        expect(screen.getByText('All').closest('button')).toHaveClass('selected', { exact: false });
+        expect(screen.queryByText('All')).not.toBeInTheDocument();
     });
 })
