@@ -161,6 +161,7 @@ export default function HomePage() {
 				title="Sports"
 				hiddenFrom="sm"
 				zIndex={2000}
+				className={styles.drawer}
 			>
 				<Sidebar
 					availableSports={sports}

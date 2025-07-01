@@ -36,3 +36,7 @@
         background: #f8f9fa;
     }
 }
+
+.drawer :global(.mantine-Drawer-body) {
+    overflow: hidden;
+}
