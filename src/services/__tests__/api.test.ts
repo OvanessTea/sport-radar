@@ -1,3 +1,6 @@
+import { mockMatches } from '@/__mocks__/mockMatches';
+import { mockSports } from '@/__mocks__/mockSports';
+import { mockTournaments } from '@/__mocks__/mockTournaments';
 import { fetchMatches, fetchSports, fetchTournaments } from '../api';
 
 global.fetch = jest.fn();
@@ -9,10 +12,6 @@ describe('API Service', () => {
 
     describe('fetchSports', () => {
         it('should fetch sports successfully', async () => {
-            const mockSports = [
-                { id: 1, name: 'Football' },
-                { id: 2, name: 'Basketball' },
-            ];
 
             (fetch as jest.Mock).mockResolvedValue({
                 ok: true,
@@ -43,18 +42,6 @@ describe('API Service', () => {
 
     describe('fetchMatches', () => {
         it('should fetch matches successfully', async () => {
-            const mockMatches = [
-                {
-                    id: 1,
-                    tournamentId: 2,
-                    start_time: "2022-02-06T03:10:38Z",
-                    status: "COMPLETED",
-                    home_team: "Sacramento Kings",
-                    away_team: "Oklahoma City Thunder",
-                    home_score: "113",
-                    away_score: "103"
-                }
-            ];
 
             (fetch as jest.Mock).mockResolvedValue({
                 ok: true,
@@ -85,13 +72,6 @@ describe('API Service', () => {
 
     describe('fetchTournaments', () => {
         it('should fetch tournaments successfully', async () => {
-            const mockTournaments = [
-                {
-                    id: 1,
-                    sportId: 1,
-                    name: "UEFA Champions league"
-                }
-            ];
 
             (fetch as jest.Mock).mockResolvedValue({
                 ok: true,
