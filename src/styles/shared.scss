@@ -7,7 +7,6 @@
 %tab {
   display: flex;
   align-items: center;
-  gap: 10px;
   border-radius: 24px;
   font-weight: 500;
   font-size: 14px;
@@ -32,4 +31,9 @@
     align-items: center;
     gap: 10px;
   }
+}
+
+.selected {
+  background: #040633;
+  color: #fff;
 } 

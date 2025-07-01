@@ -2,7 +2,6 @@
 import { Search } from '@/components/search/Search';
 import { Sidebar } from '@/components/sidebar/Sidebar';
 import { Tournaments } from '@/components/tournaments/Tournaments';
-import { bySportFilter } from '@/helpers/filters/by_sport.filter';
 import { useData } from '@/hooks/useData';
 import { MatchType } from '@/types/match.type';
 import { TournamentType } from '@/types/tournament.type';
@@ -13,11 +12,12 @@ import { useMediaQuery } from '@mantine/hooks';
 import { IconAlertCircle, IconMenu2 } from '@tabler/icons-react';
 import { Matches } from '@/components/matches/Matches';
 import { ClearFilters } from '@/components/filters/ClearFilters';
+import { refreshData } from '@/services/handleMatches';
 
 export default function HomePage() {
 	const [filteredMatches, setFilteredMatches] = useState<MatchType[]>([]);
-	const [selectedSport, setSelectedSport] = useState<string>('all');
-	const [selectedTournament, setSelectedTournament] = useState<TournamentType>({ id: 99, name: 'all', sportId: 99 });
+	const [selectedSports, setSelectedSports] = useState<string[]>([]);
+	const [selectedTournaments, setSelectedTournaments] = useState<number[]>([]);
 	const [availableTournaments, setAvailableTournaments] = useState<TournamentType[]>([]);
 	const [drawerOpened, setDrawerOpened] = useState(false);
 	const [searchQuery, setSearchQuery] = useState<string>('');
@@ -27,68 +27,36 @@ export default function HomePage() {
 
 	useEffect(() => {
 		handleMatches();
-	}, [selectedSport, selectedTournament]);
+	}, [selectedSports, selectedTournaments]);
 
 	useEffect(() => {
-		setSelectedTournament({ id: 99, name: 'all', sportId: 99 });
-		if (selectedSport === 'all') {
+		setSelectedTournaments([]);
+		if (selectedSports.length === 0) {
 			setAvailableTournaments(tournaments);
 		} else {
-			const sport = sports.find(sport => sport.name === selectedSport);
-			if (sport) {
-				setAvailableTournaments(tournaments.filter(tournament => tournament.sportId === sport.id));
-			}
+			const selectedSportIds = sports
+				.filter(sport => selectedSports.includes(sport.name))
+				.map(sport => sport.id);
+			setAvailableTournaments(tournaments.filter(tournament => selectedSportIds.includes(tournament.sportId)));
 		}
-	}, [selectedSport, tournaments, sports]);
+	}, [selectedSports, tournaments, sports]);
 
 	const handleMatches = async (search?: string) => {
-		const filters = {
-			sport: selectedSport,
-			tournament: selectedTournament,
-			...(search && { team: search }),
-		}
-		let result = [...matches];
-
-		if (filters.sport === 'all' && filters.team === '') {
-			setFilteredMatches(matches);
-			return;
-		}
-
-		if (filters.sport !== 'all') {
-			const sport = sports.find(sport => sport.name === filters.sport);
-			if (sport) {
-				result = bySportFilter(result, sport, tournaments);
-			}
-		}
-
-		if (filters.tournament.name !== 'all') {
-			result = result.filter(match => {
-				const tournament = tournaments.find(t => t.id === match.tournamentId);
-				return tournament?.id === filters.tournament?.id;
-			});
-		}
-
-		if (filters.team) {
-			result = result.filter(match =>
-				match.home_team.toLowerCase().includes(filters.team!.toLowerCase()) ||
-				match.away_team.toLowerCase().includes(filters.team!.toLowerCase())
-			);
-		}
-
+		const result = await refreshData(matches, selectedSports, selectedTournaments, search);
 		setFilteredMatches(result);
 	}
 
 	const clearFilters = () => {
-		setSelectedSport('all');
-		setSelectedTournament({ id: 99, name: 'all', sportId: 99 });
+		setSelectedSports([]);
+		setSelectedTournaments([]);
 		setSearchQuery('');
 		handleMatches();
 	}
 
 	const hasActiveFilters = () => {
 		return (
-			selectedSport !== 'all' ||
-			selectedTournament.name !== 'all' ||
+			selectedSports.length > 0 ||
+			selectedTournaments.length > 0 ||
 			searchQuery !== ''
 		);
 	}
@@ -118,7 +86,7 @@ export default function HomePage() {
 		>
 			{!isMobile && (
 				<AppShell.Navbar p="md">
-					<Sidebar availableSports={sports} setSelectedTab={setSelectedSport} selectedTab={selectedSport || 'all'} />
+					<Sidebar availableSports={sports} setSelectedTabs={setSelectedSports} selectedTabs={selectedSports} />
 				</AppShell.Navbar>
 			)}
 
@@ -141,8 +109,8 @@ export default function HomePage() {
 						align="flex-start" 
 					>
 						<Tournaments
-							selectedTournament={selectedTournament}
-							setSelectedTournament={setSelectedTournament}
+							selectedTournaments={selectedTournaments}
+							setSelectedTournaments={setSelectedTournaments}
 							availableTournaments={availableTournaments}
 						/>
 						<ClearFilters
@@ -165,9 +133,8 @@ export default function HomePage() {
 			>
 				<Sidebar
 					availableSports={sports}
-					setSelectedTab={setSelectedSport}
-					selectedTab={selectedSport || 'all'}
-					onTabChange={() => setDrawerOpened(false)}
+					setSelectedTabs={setSelectedSports}
+					selectedTabs={selectedSports}
 				/>
 			</Drawer>
 		</AppShell>

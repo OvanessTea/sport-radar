@@ -1,83 +1,78 @@
-import { Tabs } from "@mantine/core";
+import { ChipGroup, Chip } from "@mantine/core";
 import {
-  IconBallFootball,
-  IconBallBasketball,
-  IconPin,
-  IconBallBaseball,
-  IconBallAmericanFootball,
-  IconSoccerField
+	IconBallFootball,
+	IconBallBasketball,
+	IconPin,
+	IconBallBaseball,
+	IconBallAmericanFootball,
+	IconSoccerField
 } from "@tabler/icons-react";
 import styles from "./Sidebar.module.scss";
 import { SportType } from "@/types/sport.type";
 
 interface SidebarProps {
-  availableSports: SportType[];
-  setSelectedTab: (tab: string) => void;
-  selectedTab: string;
-  onTabChange?: () => void;
+	availableSports: SportType[];
+	setSelectedTabs: (tabs: string[]) => void;
+	selectedTabs: string[];
 }
 
 const sportIcons: Record<string, React.ComponentType<{ size?: number; color?: string; stroke?: number }>> = {
-  All: IconSoccerField,
-  Football: IconBallFootball,
-  Basketball: IconBallBasketball,
-  "Ice Hockey": IconPin,
-  Baseball: IconBallBaseball,
-  "American Football": IconBallAmericanFootball,
+	All: IconSoccerField,
+	Football: IconBallFootball,
+	Basketball: IconBallBasketball,
+	"Ice Hockey": IconPin,
+	Baseball: IconBallBaseball,
+	"American Football": IconBallAmericanFootball,
 };
 
-export const Sidebar = ({ availableSports, setSelectedTab, selectedTab, onTabChange }: SidebarProps) => {
+export const Sidebar = ({ availableSports, setSelectedTabs, selectedTabs }: SidebarProps) => {
 
-  if (availableSports.length === 0) {
-    return null;
-  }
+	if (availableSports.length === 0) {
+		return null;
+	}
 
-  const handleTabChange = (value: string | null) => {
-    setSelectedTab(value || 'all');
-    onTabChange?.();
-  };
+	const handleTabChange = (value: string | string[]) => {
+		const selectedValue = Array.isArray(value) ? value : [value];
 
-  const renderIcon = (name: string, isSelected: boolean) => {
-    const IconComponent = sportIcons[name];
-    if (!IconComponent) return null;
-    return (
-      <IconComponent
-        size={22}
-        color={isSelected ? "#fff" : "#222"}
-        stroke={2}
-      />
-    );
-  };
+		if (selectedValue.length === 0) {
+			setSelectedTabs([]);
+		} else {
+			setSelectedTabs(selectedValue);
+		}
+	};
 
-  return (
-    <Tabs
-      orientation="vertical"
-      value={selectedTab}
-      onChange={handleTabChange}
-      variant="unstyled"
-      className={styles.sidebar}
-    >
-      <Tabs.List className={styles.tabsList}>
-        <Tabs.Tab 
-          value="all" 
-          className={`${styles.tab} ${selectedTab === 'all' ? styles.selected : ''}`}
-          onClick={() => handleTabChange('all')}
-        >
-          {renderIcon('All', selectedTab === 'all')}
-          All
-        </Tabs.Tab>
-        {availableSports.map((sport) => (
-          <Tabs.Tab 
-            key={sport.id} 
-            value={sport.name} 
-            className={`${styles.tab} ${selectedTab === sport.name ? styles.selected : ''}`}
-            onClick={() => handleTabChange(sport.name)}
-          >
-            {renderIcon(sport.name, selectedTab === sport.name)}
-            {sport.name}
-          </Tabs.Tab>
-        ))}
-      </Tabs.List>
-    </Tabs>
-  );
+	const renderIcon = (name: string, isSelected: boolean) => {
+		const IconComponent = sportIcons[name];
+		if (!IconComponent) return null;
+		return (
+			<IconComponent
+				size={22}
+				color={isSelected ? "#fff" : "#222"}
+				stroke={2}
+			/>
+		);
+	};
+
+	return (
+		<div className={styles.sidebar}>
+			<div className={styles.tabsList}>
+				<ChipGroup
+					value={selectedTabs}
+					onChange={handleTabChange}
+					multiple={true}
+				>
+					{availableSports.map((sport) => (
+						<Chip
+							key={sport.id}
+							value={sport.name}
+							className={`${styles.tab} ${selectedTabs.includes(sport.name) ? styles.selected : ''}`}
+						>
+							{renderIcon(sport.name, selectedTabs.includes(sport.name))}
+							{sport.name}
+						</Chip>
+					))}
+				</ChipGroup>
+			</div>
+		</div>
+	);
 }

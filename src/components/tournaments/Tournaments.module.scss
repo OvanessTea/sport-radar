@@ -2,13 +2,34 @@
 
 .tournaments {
     padding: 3px 0;
+
     .tabsList {
         @extend %tabsList;
-        
+
         .tab {
             @extend %tab;
-            padding: 8px 16px;
             background: #F3F3F8;
+            padding: 4px 0;
+
+            * {
+                background-color: transparent;
+                padding: 0;
+            }
+
+            :global(.mantine-Chip-label) {
+                padding: 0px 16px;
+                width: 100%;
+            }
+
+            :global(.mantine-Chip-iconWrapper) {
+                display: none;
+            }
         }
+    }
+
+    .tournament__name {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
     }
 }
