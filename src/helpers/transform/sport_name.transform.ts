@@ -1,6 +1,7 @@
 export const transformSportName = (name: string) => {
     return name
-        .replace(/([A-Z])/g, ' $1') // Add space before capital letters
+        .replace(/([a-z])([A-Z])/g, '$1 $2') // Add space between lowercase and uppercase letters
+        .replace(/\s+/g, ' ') // Normalize multiple spaces to single space
         .trim() // Remove leading/trailing spaces
         .split(' ') // Split into words
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize first letter
