@@ -12,6 +12,14 @@ export const mockMatches: MatchType[] = [
         "away_score": "103"
     },
     {
+        "id": 3,
+        "tournamentId": 2,
+        "start_time": "2023-04-06T20:41:04Z",
+        "status": "SCHEDULED",
+        "home_team": "Denver Nuggets",
+        "away_team": "Brooklyn Nets"
+    },
+    {
         "id": 4,
         "tournamentId": 5,
         "start_time": "2023-02-06T20:41:47Z",

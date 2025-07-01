@@ -6,7 +6,7 @@ describe('byTournamentFilter', () => {
     it('should filter matches by tournament name correctly', () => {
         const result = byTournamentFilter(mockMatches, mockTournaments[1]);
 
-        expect(result).toHaveLength(1);
+        expect(result).toHaveLength(2);
         expect(result[0].tournamentId).toBe(2);
     });
 
