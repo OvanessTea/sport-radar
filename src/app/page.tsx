@@ -12,7 +12,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { IconAlertCircle, IconMenu2 } from '@tabler/icons-react';
 import { Matches } from '@/components/matches/Matches';
 import { ClearFilters } from '@/components/filters/ClearFilters';
-import { refreshData } from '@/services/handleMatches';
+import { refreshData } from '@/services/refreshData';
 
 export default function HomePage() {
 	const [filteredMatches, setFilteredMatches] = useState<MatchType[]>([]);
