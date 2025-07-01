@@ -44,10 +44,10 @@ describe('byTeamNameFilter', () => {
         expect(result[1].away_team).toBe('Chicago Blackhawks');
     });
 
-    it('should handle empty team name', () => {
+    it('should return all matches if team name is empty', () => {
         const result = byTeamNameFilter(mockMatches, '');
 
-        expect(result).toHaveLength(3);
+        expect(result).toHaveLength(mockMatches.length);
     });
 
     it('should handle partial team name', () => {

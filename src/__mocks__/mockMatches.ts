@@ -12,6 +12,16 @@ export const mockMatches: MatchType[] = [
         "away_score": "103"
     },
     {
+        "id": 4,
+        "tournamentId": 5,
+        "start_time": "2023-02-06T20:41:47Z",
+        "status": "Live",
+        "home_team": "Detroit Redwings",
+        "away_team": "Los Angeles Kings",
+        "home_score": "1",
+        "away_score": "1"
+    },
+    {
         "id": 5,
         "tournamentId": 5,
         "start_time": "2022-02-06T20:42:13Z",

@@ -11,4 +11,9 @@ export const mockTournaments: TournamentType[] = [
 		"sportId": 2,
 		"name": "NBA"
 	},
+	{
+		"id": 5,
+		"sportId": 3,
+		"name": "NHL"
+	},
 ]
