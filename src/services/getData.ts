@@ -5,15 +5,21 @@ import { fetchMatches, fetchSports, fetchTournaments } from "./api";
 import { transformSportName } from "@/helpers/transform/sport_name.transform";
 
 export const getData = async () => {
-    if (localStorage.getItem('data')) {
-        return JSON.parse(localStorage.getItem('data') || '{}');
+    try {
+        const cachedData = localStorage.getItem('data');
+        if (cachedData) {
+            return JSON.parse(cachedData);
+        }
+    } catch {
+        // Continue if parse fails
     }
     const matches = await fetchMatches();   
     const tournaments = await fetchTournaments();
-    const sports = (await fetchSports()).map((sport: SportType) => ({
+    const sportsData = await fetchSports();
+    const sports = sportsData ? sportsData.map((sport: SportType) => ({
       ...sport,
       name: transformSportName(sport.name)
-    }));
+    })) : [];
     const data = {matches, tournaments, sports};
     cacheData(data);
     return data;

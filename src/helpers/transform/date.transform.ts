@@ -1,11 +1,16 @@
 export const dateTransform = (date: string) => {
-    return new Date(date).toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit', 
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-    }).replace(/(\d+)\/(\d+)\/(\d+),\s(\d+):(\d+):(\d+)/, '$3-$1-$2 $4:$5:$6')
+    const dateObj = new Date(date);
+    
+    if (isNaN(dateObj.getTime())) {
+        return "Invalid Date";
+    }
+
+    const year = dateObj.getUTCFullYear();
+    const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getUTCDate()).padStart(2, '0');
+    const hour = String(dateObj.getUTCHours()).padStart(2, '0');
+    const minute = String(dateObj.getUTCMinutes()).padStart(2, '0');
+    const second = String(dateObj.getUTCSeconds()).padStart(2, '0');
+    
+    return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
