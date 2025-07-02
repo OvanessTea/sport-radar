@@ -5,6 +5,7 @@
 
     .tabsList {
         @extend %tabsList;
+        flex-wrap: wrap;
 
         .tab {
             @extend %tab;
