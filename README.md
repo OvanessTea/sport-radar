@@ -7,6 +7,7 @@ A web application for displaying sports matches, tournaments, and sports types w
 - **Data Display**: List of sports, tournaments, and matches
 - **Filtering**: Search by team name, filter by sport and tournament
 - **Caching**: Local data storage for better performance
+- **Data retrieval**: Data retrieval is done via configured amazonaws
 
 ## Technologies
 

@@ -1,4 +1,4 @@
-const BASE_URL = '/api';
+const BASE_URL = 'https://3209glbex9.execute-api.eu-north-1.amazonaws.com';
 
 export async function fetchSports() {
   const res = await fetch(`${BASE_URL}/sport/all`);
