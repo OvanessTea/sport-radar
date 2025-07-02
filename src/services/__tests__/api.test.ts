@@ -20,7 +20,7 @@ describe('API Service', () => {
 
             const result = await fetchSports();
 
-            expect(fetch).toHaveBeenCalledWith('/api/sport/all');
+            expect(fetch).toHaveBeenCalledWith('https://3209glbex9.execute-api.eu-north-1.amazonaws.com/sport/all');
             expect(result).toEqual(mockSports);
         });
 
@@ -50,7 +50,7 @@ describe('API Service', () => {
 
             const result = await fetchMatches();
 
-            expect(fetch).toHaveBeenCalledWith('/api/match/all');
+            expect(fetch).toHaveBeenCalledWith('https://3209glbex9.execute-api.eu-north-1.amazonaws.com/match/all');
             expect(result).toEqual(mockMatches);
         });
 
@@ -80,7 +80,7 @@ describe('API Service', () => {
 
             const result = await fetchTournaments();
 
-            expect(fetch).toHaveBeenCalledWith('/api/tournament/all');
+            expect(fetch).toHaveBeenCalledWith('https://3209glbex9.execute-api.eu-north-1.amazonaws.com/tournament/all');
             expect(result).toEqual(mockTournaments);
         });
 
